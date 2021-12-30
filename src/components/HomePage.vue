@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ msg }}</h1>
+  <NavBar />
 
   <p>
     Recommended IDE setup:
@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import NavBar from './NavBar.vue';
 
 defineProps<{ msg: string }>()
 
