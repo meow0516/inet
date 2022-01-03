@@ -1,5 +1,6 @@
+import { AuthorInfo } from "./AuthorInfo"
 export type ArticleInfo = {
-    author: string,
+    author: AuthorInfo,
     body: string,
     coverImage: string,
     createdAt: string,
