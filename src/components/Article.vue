@@ -1,26 +1,42 @@
 <template>
   <div class="article-card flex justify-content-center my-2">
     <div class="w-6 flex flex-column text-left border-round border-1 border-500">
-      <div class="article-img bg-no-repeat bg-cover bg-center h-15rem"></div>
-      <div class="article-info p-5">
-        <h3 class="article-title font-bold">
-          <a href="#">This is title</a>
-        </h3>
-        <p
-          class="article-abstract"
-        >Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum veritatis optio blanditiis ipsam minus? Dolorem aut cupiditate ex tempore ut. Earum nisi soluta odio a maxime vitae in dicta modi eveniet et quo rerum eos, veniam libero maiores repudiandae natus! Eius, rerum est qui quae ipsa at corporis nostrum. Delectus!</p>
-        <div class="author-info flex">
-          <img src="https://via.placeholder.com/50x50" alt="avatar" class="avatar mr-2" />
-          <p class="post-info post-time">2021-10-15 發表&ensp;|&ensp;</p>
-          <p class="post-info browse-count">48763 次瀏覽&ensp;|&ensp;</p>
-          <p class="post-info like-count">87 個like</p>
+      <div
+        class="bg-no-repeat bg-cover bg-center h-15rem"
+        :style="{ backgroundImage: 'url(' + coverImage + ')' }"
+      ></div>
+      <div class="flex px-5 pt-5">
+        <img :src="avatar" alt="avatar" class="avatar m-2" />
+        <div class="created-info flex flex-column justify-content-center">
+          <p class="author m-0">{{ author }}</p>
+          <p class="created-time m-0">{{ createdAt }} 發表</p>
         </div>
+      </div>
+      <div class="article-info px-5">
+        <h3 class="article-title font-bold">
+          <a href="#">{{ title }}</a>
+        </h3>
+        <p class="article-abstract">{{ body }}</p>
+      </div>
+      <div class="flex px-5">
+        <p class="pr-6">{{ views }} 次瀏覽</p>
+        <p>{{ likes }} 個like</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { defineProps, toRef, toRefs } from 'vue';
+import { ArticleInfo } from '../types/ArticleInfo';
+let props = defineProps<{
+  article: ArticleInfo
+}>()
+
+let article = toRef(props, 'article')
+let { title, body, views, likes, createdAt, coverImage } = toRefs(article.value)
+let author = article.value.author.name || article.value.author.username
+let avatar = article.value.author.avatar
 
 </script>
 
@@ -29,10 +45,9 @@ a {
   color: black;
   text-decoration: none;
 }
-.article-img {
-  background-image: url("https://images.pexels.com/photos/406014/pexels-photo-406014.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
-}
 .avatar {
   border-radius: 50%;
+  width: 50px;
+  height: auto;
 }
 </style>
