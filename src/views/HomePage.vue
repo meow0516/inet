@@ -3,28 +3,27 @@
     <ProgressSpinner />
   </div>
   <div v-else>
-    <Article v-for="(article, index) in articles" :key="article.id" :article="article" />
+    <div class="surface-50 py-2">
+      <Article v-for="(article, index) in articles" :key="article.id" :article="article" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onBeforeMount } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import Article from '../components/Article.vue'
 import { ArticleInfo } from '../types/ArticleInfo'
-import axios from 'axios'
+import ArticleAPI from '../apis/article';
 
 import ProgressSpinner from 'primevue/progressspinner';
 
 let isLoading = ref(true)
-let articles = reactive(<Array<ArticleInfo>>[])
+let articles = ref(<Array<ArticleInfo>>[])
 
-onBeforeMount(() => {
-  axios.get('http://172.16.240.53:45816/api/inet/articles?cursor=0&page=0&size=25').then(response => {
-    response.data.forEach((article: ArticleInfo) => {
-      articles.push(article)
-    });
-    isLoading.value = false
-  })
+onMounted(async () => {
+  const response = await ArticleAPI.getByQuery();
+  articles.value = response.data;
+  isLoading.value = false;
 })
 
 </script>
