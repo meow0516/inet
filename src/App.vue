@@ -1,11 +1,11 @@
 <template>
   <NavBar />
-  <HomePage />
+  <router-view></router-view>
 </template>
 
 <script setup lang="ts">
 import NavBar from './components/NavBar.vue'
-import HomePage from './components/HomePage.vue'
+
 </script>
 
 <style>
