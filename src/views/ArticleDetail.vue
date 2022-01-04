@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-column align-items-center my-2">
+  <div class="flex flex-column align-items-center surface-50 py-2 article">
     <div class="flex mt-6" v-if="isLoading">
       <ProgressSpinner />
     </div>
-    <div class="w-6 flex flex-column border-1 border-400" v-else>
+    <div class="w-5 flex flex-column border-1 border-400 surface-0" v-else>
       <div
         class="bg-no-repeat bg-cover bg-center h-15rem"
         :style="{ backgroundImage: 'url(' + article.coverImage + ')' }"
@@ -76,5 +76,8 @@ onBeforeMount(() => {
   border-radius: 50%;
   width: 50px;
   height: auto;
+}
+.article {
+  min-height: calc(100vh - 86px);
 }
 </style>
