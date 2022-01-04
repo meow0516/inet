@@ -9,12 +9,16 @@
         :style="{ backgroundImage: 'url(' + article.coverImage + ')' }"
       ></div>
       <div class="flex pt-5 px-5">
-        <img :src="article.author.avatar" alt="avatar" class="avatar m-2" />
+        <img
+          :src="article.author.avatar ? article.author.avatar : defaultAvatar"
+          alt="avatar"
+          class="avatar m-2"
+        />
         <div class="created-info flex flex-column justify-content-center">
           <p
             class="author m-0"
           >{{ article.author.name ? article.author.name : article.author.username }}</p>
-          <p class="created-time m-0">{{ article.createdAt }}發表</p>
+          <p class="created-time m-0">{{ time }}發表</p>
         </div>
       </div>
       <article class="px-5">
@@ -46,19 +50,23 @@
 import { onBeforeMount, ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios'
+import moment from 'moment';
 
 import ProgressSpinner from 'primevue/progressspinner';
 import InputText from 'primevue/inputtext';
 import { ArticleInfo } from '../types/ArticleInfo';
+import defaultAvatar from '../assets/default_avatar.png'
 
 let isLoading = ref(true)
 let id = useRoute().params.id
 let article = reactive({}) as ArticleInfo
+let time = ref()
 
 onBeforeMount(() => {
   axios.get('http://172.16.240.53:45816/api/inet/articles/' + id).then(response => {
     Object.assign(article, response.data)
     isLoading.value = false
+    time.value = moment(article.createdAt).format('YYYY-MM-DD HH:mm')
   })
 })
 </script>
