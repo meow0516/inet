@@ -30,4 +30,7 @@ onBeforeMount(() => {
 </script>
 
 <style scoped lang="scss">
+a {
+  text-decoration: none;
+}
 </style>
