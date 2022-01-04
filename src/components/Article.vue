@@ -7,7 +7,7 @@
           :style="{ backgroundImage: 'url(' + coverImage + ')' }"
         ></div>
         <div class="flex px-5 pt-5">
-          <img :src="avatar" alt="avatar" class="avatar m-2" />
+          <img :src="avatar ? avatar : defaultAvatar" alt="avatar" class="avatar m-2" />
           <div class="created-info flex flex-column justify-content-center">
             <p class="author m-0">{{ author }}</p>
             <p class="created-time m-0">{{ convertCreatedAt }}發表</p>
@@ -38,6 +38,7 @@
 import { defineProps, toRef, toRefs } from 'vue';
 import { ArticleInfo } from '../types/ArticleInfo';
 import moment from 'moment'
+import defaultAvatar from '../assets/default_avatar.png'
 
 let props = defineProps<{
   article: ArticleInfo
