@@ -3,7 +3,7 @@
     <div class="menu-main flex">
       <div class="logo">
         <a href="#">
-          <img src="https://via.placeholder.com/50x40" alt="logo" />
+          <img src="../assets/inetlogo.png" alt="logo" />
         </a>
       </div>
       <div class="search mx-2">
@@ -13,13 +13,16 @@
         </span>
       </div>
     </div>
-    <div v-if="isLogIn" class="menu-account flex">
-      <Button label="Log in" class="p-button-text" />
+    <div v-if="!isLogIn" class="menu-account flex">
+      <router-link to="login">
+        <Button label="Log in" class="p-button-text" />
+      </router-link>
       <Button label="Create account" class="p-button-outlined" />
     </div>
     <div v-else class="menu-account flex">
-      <Button label="Create Post" class="p-button-outlined" />
-
+      <router-link to="/createpost">
+        <Button label="Create Post" class="p-button-outlined" />
+      </router-link>
       <i class="pi pi-bell text-3xl mx-2 py-2"></i>
       <i class="pi pi-github text-3xl mx-2 py-2"></i>
     </div>
@@ -31,9 +34,15 @@ import { ref } from 'vue'
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
-let isLogIn = ref(false).value
+let isLogIn = ref(true).value
 
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
+img {
+  height: 40px;
+}
 </style>
