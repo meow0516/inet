@@ -4,9 +4,9 @@
   >
     <div class="menu-main flex">
       <div class="logo">
-        <a href="#">
+        <router-link to="/">
           <img src="../assets/inetlogo.png" alt="logo" />
-        </a>
+        </router-link>
       </div>
       <div class="search mx-2">
         <span class="p-input-icon-right">
