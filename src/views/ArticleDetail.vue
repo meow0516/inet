@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-column align-items-center surface-50 py-4 article">
+  <div class="flex flex-column align-items-center surface-50 py-4 article-container">
     <div class="flex mt-6" v-if="isLoading">
       <ProgressSpinner />
     </div>
-    <div class="w-5 flex flex-column border-1 border-400 surface-0" v-else>
+    <div class="flex flex-column border-1 border-400 surface-0 article" v-else>
       <div
         class="bg-no-repeat bg-cover bg-center h-15rem"
         :style="{ backgroundImage: 'url(' + article.coverImage + ')' }"
@@ -76,7 +76,25 @@ onMounted(async () => {
   width: 50px;
   height: auto;
 }
-.article {
+.article-container {
   min-height: calc(100vh - 86px);
+}
+.article {
+  width: 50%;
+}
+@media (max-width: 1024px) {
+  .article {
+    width: 60%;
+  }
+  .avatar {
+    border-radius: 50%;
+    width: 30px;
+    height: auto;
+  }
+}
+@media (max-width: 768px) {
+  .article {
+    width: 100%;
+  }
 }
 </style>

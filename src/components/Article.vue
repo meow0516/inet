@@ -1,6 +1,6 @@
 <template>
   <article class="flex justify-content-center mb-2">
-    <div class="w-5 flex flex-column text-left border-round border-1 border-500 surface-0">
+    <div class="flex flex-column text-left border-round border-1 border-500 surface-0 article">
       <router-link :to="`/articles/` + id">
         <img :src="coverImage" class="h-15rem w-full cover-image mb-5" alt="coverImage" />
       </router-link>
@@ -58,8 +58,20 @@ a {
   width: 50px;
   height: auto;
 }
-
 .cover-image {
   object-fit: cover;
+}
+.article {
+  width: 50%;
+}
+@media (max-width: 1024px) {
+  .article {
+    width: 60%;
+  }
+}
+@media (max-width: 768px) {
+  .article {
+    width: 90%;
+  }
 }
 </style>
