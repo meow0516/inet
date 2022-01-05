@@ -8,14 +8,14 @@
         <img :src="avatar || defaultAvatar" alt="avatar" class="avatar m-2" />
         <div class="created-info flex flex-column justify-content-center">
           <p class="author m-0">{{ author }}</p>
-          <p class="created-time m-0">{{ convertCreatedAt }}發表</p>
+          <p class="created-time m-0 text-700 text-sm">{{ convertCreatedAt }}發表</p>
         </div>
       </div>
       <div class="article-info px-5">
         <router-link :to="`/articles/` + id">
-          <h3 class="article-title font-bold">{{ title }}</h3>
+          <h2 class="article-title font-bold">{{ title }}</h2>
         </router-link>
-        <p class="article-abstract">{{ body }}</p>
+        <p class="article-abstract text-700 text-sm">{{ body }}</p>
       </div>
       <div class="flex px-5">
         <p class="pr-6">

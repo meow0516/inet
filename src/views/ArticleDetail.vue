@@ -18,12 +18,12 @@
           <p
             class="author m-0"
           >{{ article.author.name ? article.author.name : article.author.username }}</p>
-          <p class="created-time m-0">{{ time }}發表</p>
+          <p class="created-time m-0 text-700 text-sm">{{ time }}發表</p>
         </div>
       </div>
       <article class="px-5">
-        <h1 class="title">{{ article.title }}</h1>
-        <p>{{ article.body }}</p>
+        <h2 class="title">{{ article.title }}</h2>
+        <p class="text-sm">{{ article.body }}</p>
       </article>
       <div class="comments px-5 pb-5">
         <h2>Discussion</h2>
