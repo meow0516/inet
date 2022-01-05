@@ -47,10 +47,10 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios'
 import moment from 'moment';
+import ArticleAPI from '../apis/article';
 
 import ProgressSpinner from 'primevue/progressspinner';
 import InputText from 'primevue/inputtext';
@@ -59,15 +59,14 @@ import defaultAvatar from '../assets/default_avatar.png'
 
 let isLoading = ref(true)
 let id = useRoute().params.id
-let article = reactive({}) as ArticleInfo
+let article = reactive(<ArticleInfo>{})
 let time = ref()
 
-onBeforeMount(() => {
-  axios.get('http://172.16.240.53:45816/api/inet/articles/' + id).then(response => {
-    Object.assign(article, response.data)
-    isLoading.value = false
-    time.value = moment(article.createdAt).format('YYYY-MM-DD HH:mm')
-  })
+onMounted(async () => {
+  const response = await ArticleAPI.getById(id);
+  Object.assign(article, response.data)
+  isLoading.value = false;
+  time.value = moment(article.createdAt).format('YYYY-MM-DD HH:mm')
 })
 </script>
 
