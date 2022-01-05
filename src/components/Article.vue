@@ -1,5 +1,5 @@
 <template>
-  <article class="flex justify-content-center my-2">
+  <article class="flex justify-content-center mb-2">
     <div class="w-5 flex flex-column text-left border-round border-1 border-500 surface-0">
       <router-link :to="`/articles/` + id">
         <img :src="coverImage" class="h-15rem w-full cover-image mb-5" alt="coverImage" />

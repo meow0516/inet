@@ -1,5 +1,7 @@
 <template>
-  <nav class="flex justify-content-between mx-6 my-3">
+  <nav
+    class="flex justify-content-between px-6 py-1 fixed w-full bg-white top-0 left-0 z-1 border-bottom-1 border-200"
+  >
     <div class="menu-main flex">
       <div class="logo">
         <a href="#">

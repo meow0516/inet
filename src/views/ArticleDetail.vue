@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column align-items-center surface-50 py-2 article">
+  <div class="flex flex-column align-items-center surface-50 py-4 article">
     <div class="flex mt-6" v-if="isLoading">
       <ProgressSpinner />
     </div>

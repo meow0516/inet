@@ -3,7 +3,7 @@
     <ProgressSpinner />
   </div>
   <div v-else>
-    <div class="surface-50 py-2">
+    <div class="surface-50 py-4">
       <Article v-for="(article, index) in articles" :key="article.id" :article="article" />
     </div>
   </div>
