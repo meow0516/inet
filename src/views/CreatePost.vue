@@ -9,15 +9,16 @@
       />
       <InputText
         type="text"
-        class="p-inputtext-lg w-full"
+        class="p-inputtext-lg w-full input-title"
         placeholder="New Post Title Here..."
         v-model="title"
         @click="showGuide"
       />
       <Editor
-        v-model="content"
         editorStyle="height: 500px"
+        class="input-content"
         placeholder="Write your post content here..."
+        v-model="content"
         @click="showGuide"
       />
       <div class="my-3">
@@ -30,7 +31,12 @@
         {{ saveStatus }}
       </div>
     </div>
-    <div class="w-2 px-2">guideeeee</div>
+    <div class="w-2 px-2">
+      <div class="guide" :style="guideY">
+        <h3>{{ guideTitle }}</h3>
+        <p class="text-700">{{ guideContent }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,8 +55,11 @@ let imageUrl = ref('')
 let isLocalStorageOn = ref(true)
 let localStorageStatus = computed(() => isLocalStorageOn.value ? "已啟用" : "")
 let saveStatus = ref('')
+let guideTitle = ref('')
+let guideContent = ref('')
+let guideY = ref('')
 
-setInterval(storeToLocalStorage, 10000)
+setInterval(storeToLocalStorage, 60000)
 
 function storeToLocalStorage() {
   if (isLocalStorageOn.value) {
@@ -68,7 +77,18 @@ function clearLocalStorage() {
   localStorage.removeItem('storageContent');
 }
 
-function showGuide() {
+function showGuide(e: any) {
+  let classList = e.target.classList
+  if (classList.contains('input-title')) {
+    guideY.value = 'top: 40px'
+    guideTitle.value = 'Writing a Great Post Title'
+    guideContent.value = 'Think of your post title as a super short (but compelling!) description — like an overview of the actual post in one short sentence. Use keywords where appropriate to help ensure people can find your post by search.'
+  }
+  else {
+    guideY.value = 'top: 150px'
+    guideTitle.value = 'Editor Basics'
+    guideContent.value = 'Use Markdown to write and format posts. You can use Liquid tags to add rich content such as Tweets, YouTube videos, etc. In addition to images for the post\'s content, you can also drag and drop a cover image'
+  }
 }
 
 function submitPost() {
@@ -87,5 +107,8 @@ function submitPost() {
 <style scoped lang="scss">
 .page-container {
   min-height: calc(100vh - 53px);
+}
+.guide {
+  position: relative;
 }
 </style>
