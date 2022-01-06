@@ -1,8 +1,8 @@
 <template>
   <article class="flex justify-content-center mb-2">
     <div class="flex flex-column text-left border-round border-1 border-500 surface-0 article">
-      <router-link :to="`/articles/` + id">
-        <img :src="coverImage" class="h-15rem w-full cover-image mb-5" alt="coverImage" />
+      <router-link :to="`/articles/` + id" class="mb-5">
+        <img :src="coverImage" class="h-15rem w-full cover-image" alt="coverImage" />
       </router-link>
       <div class="flex px-5">
         <img :src="avatar || defaultAvatar" alt="avatar" class="avatar m-2" />
