@@ -3,7 +3,7 @@
     <div class="w-6 px-4">
       <InputText
         type="text"
-        class="p-inputtext-lg w-full text-sm"
+        class="p-inputtext-lg w-full text-sm mb-3"
         placeholder="CoverImage URL"
         v-model="imageUrl"
       />
@@ -40,6 +40,9 @@
       </div>
     </div>
     <div class="w-2 px-2">
+      <div class="img-preview" :class="{ displayPreviewImg: displayPreviewImg }">
+        <img :src="imageUrl" alt="image preview" />
+      </div>
       <div class="guide" :style="guideY">
         <h3>{{ guideTitle }}</h3>
         <p class="text-700">{{ guideContent }}</p>
@@ -90,7 +93,7 @@ function clearLocalStorage() {
 function showGuide(e: any) {
   let classList = e.target.classList
   if (classList.contains('input-title')) {
-    guideY.value = 'top: 40px'
+    guideY.value = 'top: 30px'
     guideTitle.value = 'Writing a Great Post Title'
     guideContent.value = 'Think of your post title as a super short (but compelling!) description — like an overview of the actual post in one short sentence. Use keywords where appropriate to help ensure people can find your post by search.'
   }
@@ -102,17 +105,22 @@ function showGuide(e: any) {
 }
 
 function submitPost() {
-  axios.post('http://172.16.240.53:45816/api/inet/articles', {
-    "authorId": 2,
-    "coverImage": imageUrl.value,
-    "title": title.value,
-    "body": content.value
-  }).then((response) => {
-    clearLocalStorage()
-    let id = response.data.id
-    router.push(`/articles/${id}`)
-  })
+  if (title.value.length === 0) alert('please input title')
+  else {
+    axios.post('http://172.16.240.53:45816/api/inet/articles', {
+      "authorId": 2,
+      "coverImage": imageUrl.value,
+      "title": title.value,
+      "body": content.value
+    }).then((response) => {
+      clearLocalStorage()
+      let id = response.data.id
+      router.push(`/articles/${id}`)
+    })
+  }
 }
+
+let displayPreviewImg = computed(() => imageUrl.value.length !== 0)
 </script>
 
 <style scoped lang="scss">
@@ -121,5 +129,16 @@ function submitPost() {
 }
 .guide {
   position: relative;
+}
+
+.img-preview {
+  display: none;
+  img {
+    width: 100px;
+    height: auto;
+  }
+}
+.displayPreviewImg {
+  display: block;
 }
 </style>
