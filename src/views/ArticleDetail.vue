@@ -18,7 +18,7 @@
           <p
             class="author m-0"
           >{{ article.author.name ? article.author.name : article.author.username }}</p>
-          <p class="created-time m-0 text-700 text-sm">{{ time }}發表</p>
+          <p class="created-time m-0 text-700 text-sm">{{ articleCreatedAt }}發表</p>
         </div>
       </div>
       <article class="px-5">
@@ -33,13 +33,26 @@
           </div>
           <InputText type="text" class="w-full" />
         </div>
-        <div class="flex">
+        <div class="flex my-3" v-for="comment in comments">
           <div class="mr-3">
-            <img src="https://via.placeholder.com/50x50" alt="avatar" class="avatar" />
+            <img
+              :src="comment.author.avatar ? comment.author.avatar : defaultAvatar"
+              alt="avatar"
+              class="avatar"
+            />
           </div>
-          <div
-            class="body"
-          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi labore ad facere ea temporibus reiciendis consectetur repudiandae reprehenderit accusantium tempore!</div>
+          <div class="flex flex-column">
+            <p
+              class="text-sm m-0 font-semibold"
+            >{{ comment.author.name ? comment.author.name : comment.author.username }}</p>
+            <p class="text-sm m-0">
+              {{ comment.body }}
+              <span class="text-sm m-0 text-400">
+                &#64;
+                {{ moment(comment.createdAt).format('YYYY-MM-DD HH:mm') }}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -50,24 +63,35 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import moment from 'moment';
+
 import ArticleAPI from '../apis/article';
+import CommentAPI from '../apis/comment';
+
+import { ArticleInfo } from '../types/ArticleInfo';
+import { Comment } from '../types/Comment'
 
 import ProgressSpinner from 'primevue/progressspinner';
 import InputText from 'primevue/inputtext';
-import { ArticleInfo } from '../types/ArticleInfo';
 import defaultAvatar from '../assets/default_avatar.png'
 
 let isLoading = ref(true)
 let id = Number(useRoute().params.id)
 let article = reactive(<ArticleInfo>{})
-let time = ref()
+let articleCreatedAt = ref()
 
-onMounted(async () => {
-  const response = await ArticleAPI.getById(id);
-  Object.assign(article, response.data)
-  isLoading.value = false;
-  time.value = moment(article.createdAt).format('YYYY-MM-DD HH:mm')
-})
+let comments = ref(<Array<Comment>>[])
+
+onMounted(
+  async () => {
+    const responseArticle = await ArticleAPI.getById(id);
+    Object.assign(article, responseArticle.data)
+    isLoading.value = false;
+    articleCreatedAt.value = moment(article.createdAt).format('YYYY-MM-DD HH:mm')
+
+    const responseComment = await CommentAPI.getById(id)
+    comments.value = responseComment.data
+  }
+)
 </script>
 
 <style scoped lang="scss">
