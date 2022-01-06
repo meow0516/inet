@@ -58,7 +58,7 @@ import { ArticleInfo } from '../types/ArticleInfo';
 import defaultAvatar from '../assets/default_avatar.png'
 
 let isLoading = ref(true)
-let id = useRoute().params.id
+let id = Number(useRoute().params.id)
 let article = reactive(<ArticleInfo>{})
 let time = ref()
 
