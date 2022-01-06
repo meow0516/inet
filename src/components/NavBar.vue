@@ -2,7 +2,7 @@
   <nav
     class="flex justify-content-between fixed bg-white top-0 left-0 z-1 border-bottom-1 border-200"
   >
-    <div class="menu-main flex">
+    <div class="menu-main flex align-items-center">
       <div class="logo">
         <router-link to="/">
           <img src="../assets/inetlogo.png" alt="logo" />
@@ -15,13 +15,13 @@
         </span>
       </div>
     </div>
-    <div v-if="!isLogIn" class="menu-account flex">
+    <div v-if="!isLogIn" class="menu-account flex align-items-center">
       <router-link to="login">
         <Button label="Log in" class="p-button-text" />
       </router-link>
       <Button label="Create account" class="p-button-outlined" />
     </div>
-    <div v-else class="menu-account flex">
+    <div v-else class="menu-account flex align-items-center">
       <router-link to="/createpost">
         <Button label="Create Post" class="p-button-outlined btn-create" />
       </router-link>
