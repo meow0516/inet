@@ -9,17 +9,16 @@
       />
       <InputText
         type="text"
-        class="p-inputtext-lg w-full input-title"
+        class="p-inputtext-lg w-full"
         placeholder="New Post Title Here..."
         v-model="title"
-        @click="showGuide"
+        @click="showTitleGuide"
       />
       <Editor
         editorStyle="height: 500px"
-        class="input-content"
         placeholder="Write your post content here..."
         v-model="content"
-        @click="showGuide"
+        @click="showContentGuide"
       >
         <template #toolbar>
           <span class="ql-formats">
@@ -40,10 +39,10 @@
       </div>
     </div>
     <div class="w-2 px-2">
-      <div class="img-preview" :class="{ displayPreviewImg: displayPreviewImg }">
-        <img :src="imageUrl" alt="image preview" />
+      <div v-show="imageUrl.length > 0">
+        <img :src="imageUrl" alt="image preview" class="w-5rem" />
       </div>
-      <div class="guide" :style="guideY">
+      <div class="relative" :style="guideY">
         <h3>{{ guideTitle }}</h3>
         <p class="text-700">{{ guideContent }}</p>
       </div>
@@ -52,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
@@ -61,47 +60,66 @@ import Editor from 'primevue/editor';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 
+const localStorageKeys = {
+  title: 'storageTitle',
+  content: 'storageContent',
+};
+
 const router = useRouter()
-let title = ref(localStorage.getItem('storageTitle') || '')
-let content = ref(localStorage.getItem('storageContent') || '')
+let title = ref(localStorage.getItem(localStorageKeys.title) || '')
+let content = ref(localStorage.getItem(localStorageKeys.content) || '')
 let imageUrl = ref('')
+
 let isLocalStorageOn = ref(true)
 let localStorageStatus = computed(() => isLocalStorageOn.value ? "已啟用" : "")
 let saveStatus = ref('')
+
 let guideTitle = ref('')
 let guideContent = ref('')
 let guideY = ref('')
 
-setInterval(storeToLocalStorage, 60000)
+let intervalId: NodeJS.Timer | undefined = undefined;
+
+onMounted(() => {
+  intervalId = setInterval(storeToLocalStorage, 60000)
+})
+
+onBeforeUnmount(() => {
+  if (intervalId) {
+    clearInterval(intervalId)
+  }
+});
 
 function storeToLocalStorage() {
   if (isLocalStorageOn.value) {
-    localStorage.setItem('storageTitle', title.value)
-    localStorage.setItem('storageContent', content.value)
+    localStorage.setItem(localStorageKeys.title, title.value)
+    localStorage.setItem(localStorageKeys.content, content.value)
     saveStatus.value = '已自動儲存'
-    setTimeout(() => saveStatus.value = '', 5000)
+    let timeoutId = setTimeout(() => {
+      saveStatus.value = ''
+      clearTimeout(timeoutId);
+    }, 5000)
   }
   else {
     clearLocalStorage()
   }
 }
+
 function clearLocalStorage() {
   localStorage.removeItem('storageTitle');
   localStorage.removeItem('storageContent');
 }
 
-function showGuide(e: any) {
-  let classList = e.target.classList
-  if (classList.contains('input-title')) {
-    guideY.value = 'top: 30px'
-    guideTitle.value = 'Writing a Great Post Title'
-    guideContent.value = 'Think of your post title as a super short (but compelling!) description — like an overview of the actual post in one short sentence. Use keywords where appropriate to help ensure people can find your post by search.'
-  }
-  else {
-    guideY.value = 'top: 150px'
-    guideTitle.value = 'Editor Basics'
-    guideContent.value = 'Use Markdown to write and format posts. You can use Liquid tags to add rich content such as Tweets, YouTube videos, etc. In addition to images for the post\'s content, you can also drag and drop a cover image'
-  }
+function showTitleGuide() {
+  guideY.value = 'top: 30px'
+  guideTitle.value = 'Writing a Great Post Title'
+  guideContent.value = 'Think of your post title as a super short (but compelling!) description — like an overview of the actual post in one short sentence. Use keywords where appropriate to help ensure people can find your post by search.'
+}
+
+function showContentGuide() {
+  guideY.value = 'top: 150px'
+  guideTitle.value = 'Editor Basics'
+  guideContent.value = 'Use Markdown to write and format posts. You can use Liquid tags to add rich content such as Tweets, YouTube videos, etc. In addition to images for the post\'s content, you can also drag and drop a cover image'
 }
 
 function submitPost() {
@@ -119,26 +137,10 @@ function submitPost() {
     })
   }
 }
-
-let displayPreviewImg = computed(() => imageUrl.value.length !== 0)
 </script>
 
 <style scoped lang="scss">
 .page-container {
   min-height: calc(100vh - 53px);
-}
-.guide {
-  position: relative;
-}
-
-.img-preview {
-  display: none;
-  img {
-    width: 100px;
-    height: auto;
-  }
-}
-.displayPreviewImg {
-  display: block;
 }
 </style>
