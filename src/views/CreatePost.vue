@@ -20,7 +20,15 @@
         placeholder="Write your post content here..."
         v-model="content"
         @click="showGuide"
-      />
+      >
+        <template #toolbar>
+          <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+          </span>
+        </template>
+      </Editor>
       <div class="my-3">
         <Button label="Publish" @click="submitPost" />
       </div>
@@ -43,12 +51,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 import InputText from 'primevue/inputtext';
 import Editor from 'primevue/editor';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 
+const router = useRouter()
 let title = ref(localStorage.getItem('storageTitle') || '')
 let content = ref(localStorage.getItem('storageContent') || '')
 let imageUrl = ref('')
@@ -93,13 +103,14 @@ function showGuide(e: any) {
 
 function submitPost() {
   axios.post('http://172.16.240.53:45816/api/inet/articles', {
-    "authorId": 1,
+    "authorId": 2,
     "coverImage": imageUrl.value,
     "title": title.value,
     "body": content.value
   }).then((response) => {
-    console.log(response)
     clearLocalStorage()
+    let id = response.data.id
+    router.push(`/articles/${id}`)
   })
 }
 </script>
