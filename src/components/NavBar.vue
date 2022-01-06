@@ -22,7 +22,7 @@
       <Button label="Create account" class="p-button-outlined" />
     </div>
     <div v-else class="menu-account flex align-items-center">
-      <router-link to="/createpost">
+      <router-link to="/create-post">
         <Button label="Create Post" class="p-button-outlined btn-create" />
       </router-link>
       <i class="pi pi-search text-3xl mx-2 py-2 search-icon" />
