@@ -31,7 +31,8 @@
           <div class="mr-3">
             <img src="https://via.placeholder.com/50x50" alt="avatar" class="avatar" />
           </div>
-          <InputText type="text" class="w-full" />
+          <InputText type="text" v-model="commentInput" class="w-10" />
+          <Button label="Submit" class="w-2" @click="submitComment" />
         </div>
         <div class="flex my-3" v-for="comment in comments">
           <div class="mr-3">
@@ -61,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import moment from 'moment';
 
 import ArticleAPI from '../apis/article';
@@ -72,7 +73,11 @@ import { Comment } from '../types/Comment'
 
 import ProgressSpinner from 'primevue/progressspinner';
 import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 import defaultAvatar from '../assets/default_avatar.png'
+import axios from 'axios';
+
+const router = useRouter()
 
 let isLoading = ref(true)
 let id = Number(useRoute().params.id)
@@ -80,6 +85,8 @@ let article = reactive(<ArticleInfo>{})
 let articleCreatedAt = ref()
 
 let comments = ref(<Array<Comment>>[])
+
+let commentInput = ref('')
 
 onMounted(
   async () => {
@@ -92,6 +99,18 @@ onMounted(
     comments.value = responseComment.data
   }
 )
+
+function submitComment() {
+  axios.post('http://172.16.240.53:45816/api/inet/article-comments', {
+    "articleId": id,
+    "authorId": 1,
+    "body": commentInput.value
+  }).then((response) => {
+    console.log(response)
+    commentInput.value = ''
+    router.go(0)
+  })
+}
 </script>
 
 <style scoped lang="scss">
