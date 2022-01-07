@@ -7,10 +7,10 @@ const getById = (id: number) => {
   );
 };
 
-const create = (id: number, comment: string) => {
+const create = (id: number, authorId: number, comment: string) => {
   return axios.post<{}>(`${process.env.API_URL}/article-comments`, {
     articleId: id,
-    authorId: 1,
+    authorId: authorId,
     body: comment,
   });
 };
