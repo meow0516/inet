@@ -100,16 +100,10 @@ onMounted(
   }
 )
 
-function submitComment() {
-  axios.post('http://172.16.240.53:45816/api/inet/article-comments', {
-    "articleId": id,
-    "authorId": 1,
-    "body": commentInput.value
-  }).then((response) => {
-    console.log(response)
-    commentInput.value = ''
-    router.go(0)
-  })
+async function submitComment() {
+  await CommentAPI.create(id, commentInput.value)
+  commentInput.value = ''
+  router.go(0)
 }
 </script>
 
