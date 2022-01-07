@@ -29,18 +29,14 @@
         <h2>Discussion</h2>
         <div class="flex pb-5">
           <div class="mr-3">
-            <img src="https://via.placeholder.com/50x50" alt="avatar" class="avatar" />
+            <img :src="store.state.userInfo.avatar || defaultAvatar" alt="avatar" class="avatar" />
           </div>
           <InputText type="text" v-model="commentInput" class="w-10" />
           <Button label="Submit" class="w-2" @click="submitComment" />
         </div>
         <div class="flex my-3" v-for="comment in comments">
           <div class="mr-3">
-            <img
-              :src="comment.author.avatar ? comment.author.avatar : defaultAvatar"
-              alt="avatar"
-              class="avatar"
-            />
+            <img :src="comment.author.avatar || defaultAvatar" alt="avatar" class="avatar" />
           </div>
           <div class="flex flex-column">
             <p
@@ -63,6 +59,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import moment from 'moment';
 
 import ArticleAPI from '../apis/article';
@@ -78,6 +75,7 @@ import defaultAvatar from '../assets/default_avatar.png'
 import axios from 'axios';
 
 const router = useRouter()
+const store = useStore()
 
 let isLoading = ref(true)
 let id = Number(useRoute().params.id)
@@ -101,7 +99,7 @@ onMounted(
 )
 
 async function submitComment() {
-  await CommentAPI.create(id, commentInput.value)
+  await CommentAPI.create(id, store.state.userInfo.id, commentInput.value)
   commentInput.value = ''
   router.go(0)
 }
