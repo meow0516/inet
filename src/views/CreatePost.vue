@@ -59,6 +59,7 @@ import InputText from 'primevue/inputtext';
 import Editor from 'primevue/editor';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
+import ArticleAPI from '../apis/article';
 
 const localStorageKeys = {
   title: 'storageTitle',
@@ -122,19 +123,13 @@ function showContentGuide() {
   guideContent.value = 'Use Markdown to write and format posts. You can use Liquid tags to add rich content such as Tweets, YouTube videos, etc. In addition to images for the post\'s content, you can also drag and drop a cover image'
 }
 
-function submitPost() {
+async function submitPost() {
   if (title.value.length === 0) alert('please input title')
   else {
-    axios.post('http://172.16.240.53:45816/api/inet/articles', {
-      "authorId": 2,
-      "coverImage": imageUrl.value,
-      "title": title.value,
-      "body": content.value
-    }).then((response) => {
-      clearLocalStorage()
-      let id = response.data.id
-      router.push(`/articles/${id}`)
-    })
+    const response = await ArticleAPI.create(2, imageUrl.value, title.value, content.value)
+    let id = response.data.id
+    router.push(`/articles/${id}`)
+    clearLocalStorage()
   }
 }
 </script>
