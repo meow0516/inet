@@ -52,8 +52,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 import InputText from 'primevue/inputtext';
 import Editor from 'primevue/editor';
@@ -67,6 +67,7 @@ const localStorageKeys = {
 };
 
 const router = useRouter()
+const store = useStore()
 let title = ref(localStorage.getItem(localStorageKeys.title) || '')
 let content = ref(localStorage.getItem(localStorageKeys.content) || '')
 let imageUrl = ref('')
@@ -126,7 +127,7 @@ function showContentGuide() {
 async function submitPost() {
   if (title.value.length === 0) alert('please input title')
   else {
-    const response = await ArticleAPI.create(2, imageUrl.value, title.value, content.value)
+    const response = await ArticleAPI.create(store.state.userInfo.id, imageUrl.value, title.value, content.value)
     let id = response.data.id
     router.push(`/articles/${id}`)
     clearLocalStorage()
