@@ -16,10 +16,12 @@
       </div>
     </div>
     <div v-if="!isLogIn" class="menu-account flex align-items-center">
-      <router-link to="login">
+      <router-link to="/login">
         <Button label="Log in" class="p-button-text" />
       </router-link>
-      <Button label="Create account" class="p-button-outlined" />
+      <router-link to="/create-account">
+        <Button label="Create account" class="p-button-outlined" />
+      </router-link>
     </div>
     <div v-else class="menu-account flex align-items-center">
       <router-link to="/create-post">
