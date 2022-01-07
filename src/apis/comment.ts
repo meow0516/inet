@@ -7,8 +7,17 @@ const getById = (id: number) => {
   );
 };
 
+const create = (id: number, comment: string) => {
+  return axios.post<{}>(`${process.env.API_URL}/article-comments`, {
+    articleId: id,
+    authorId: 1,
+    body: comment,
+  });
+};
+
 const CommentAPI = {
   getById,
+  create,
 };
 
 export default CommentAPI;
