@@ -2,9 +2,14 @@ import { createStore } from 'vuex';
 const store = createStore({
   state() {
     return {
-      count: 0,
+      userInfo: {},
     };
   },
-  mutations: {},
+  mutations: {
+    saveUserInfo(state, userInfo) {
+      Object.assign(state.userInfo, userInfo);
+    },
+  },
+  actions: {},
 });
 export default store;

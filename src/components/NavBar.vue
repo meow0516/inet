@@ -29,26 +29,33 @@
       </router-link>
       <i class="pi pi-search text-3xl mx-2 py-2 search-icon" />
       <i class="pi pi-bell text-3xl mx-2 py-2"></i>
-      <i class="pi pi-github text-3xl mx-2 py-2"></i>
+      <img :src="store.state.userInfo.avatar || defaultAvatar" alt="avatar" class="avatar" />
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
-let isLogIn = ref(true).value
+import defaultAvatar from '../assets/default_avatar.png'
+import { useStore } from 'vuex';
+
+const store = useStore()
+let isLogIn = computed(() => store.state.userInfo.username ? true : false)
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 a {
   text-decoration: none;
 }
 img {
   height: 40px;
+  &.avatar {
+    border-radius: 50%;
+  }
 }
 nav {
   width: 100%;

@@ -28,8 +28,16 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
 import AuthApi from '../apis/auth';
+import { useStore } from 'vuex';
 
+const sessionStorageKeys = {
+  id: 'storageId',
+  username: 'storageUsername',
+  name: 'storageName',
+  avatar: 'storageAvatar'
+}
 const router = useRouter()
+const store = useStore()
 let inputUsername = ref('')
 let inputPassword = ref('')
 
@@ -39,6 +47,10 @@ async function handleFormSubmit() {
       username: inputUsername.value,
       password: inputPassword.value,
     });
+    let userInfo = Object.assign({}, data)
+    store.commit('saveUserInfo', userInfo)
+    sessionStorage.setItem(sessionStorageKeys.id, data.id.toString())
+    sessionStorage.setItem(sessionStorageKeys.username, data.username)
     router.push('/')
   } catch (error: any) {
     console.log(error.response)
