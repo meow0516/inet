@@ -29,22 +29,66 @@
       </router-link>
       <i class="pi pi-search text-3xl mx-2 py-2 search-icon" />
       <i class="pi pi-bell text-3xl mx-2 py-2"></i>
-      <img :src="store.state.userInfo.avatar || defaultAvatar" alt="avatar" class="avatar" />
+      <Button
+        type="button"
+        label="Toggle"
+        @click="toggle"
+        aria-haspopup="true"
+        aria-controls="overlay_menu"
+        class="bg-white border-none"
+      >
+        <img
+          :src="store.state.userInfo.avatar || defaultAvatar"
+          alt="avatar"
+          class="avatar"
+        />
+      </Button>
+      <Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import Menu from 'primevue/menu';
 
-import defaultAvatar from '../assets/default_avatar.png'
+import defaultAvatar from '../assets/default_avatar.png';
 import { useStore } from 'vuex';
 
-const store = useStore()
-let isLogIn = computed(() => store.state.userInfo.username ? true : false)
+const store = useStore();
+let isLogIn = computed(() => (store.state.userInfo.username ? true : false));
 
+const menu = ref();
+const items = ref([
+  {
+    label: 'Menu',
+    items: [
+      {
+        label: 'Settings',
+        icon: 'pi pi-cog',
+        command: () => {
+          console.log('abc');
+        },
+      },
+      {
+        label: 'Sign Out',
+        icon: 'pi pi-sign-out',
+        command: () => {
+          signOut();
+        },
+      },
+    ],
+  },
+]);
+const toggle = (event: Event) => {
+  menu.value.toggle(event);
+};
+
+function signOut() {
+  store.commit('signOut');
+}
 </script>
 
 <style scoped lang="scss">
