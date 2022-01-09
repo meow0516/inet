@@ -16,6 +16,9 @@ const store = createStore({
     saveUserInfo(state, userInfo) {
       Object.assign(state.userInfo, userInfo);
     },
+    saveUserToStorage(state, storageUserInfo) {
+      localStorage.setItem('storageUserInfo', storageUserInfo);
+    },
     signOut(state) {
       Object.assign(state.userInfo, {
         id: null,
@@ -25,6 +28,15 @@ const store = createStore({
         createdAt: '',
         lastModifiedAt: '',
       });
+      localStorage.removeItem('storageUserInfo');
+    },
+    getUserInfoFromStorage(state) {
+      if (localStorage.getItem('storageUserInfo')) {
+        let storageUserInfo = JSON.parse(
+          localStorage.getItem('storageUserInfo')
+        );
+        Object.assign(state.userInfo, storageUserInfo);
+      }
     },
   },
   actions: {},

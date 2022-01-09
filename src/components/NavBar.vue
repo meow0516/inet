@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Menu from 'primevue/menu';
@@ -89,6 +89,8 @@ const toggle = (event: Event) => {
 function signOut() {
   store.commit('signOut');
 }
+
+onMounted(() => store.commit('getUserInfoFromStorage'));
 </script>
 
 <style scoped lang="scss">
