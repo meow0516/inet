@@ -11,7 +11,7 @@
       <div class="mx-2 font-bold">Create Post</div>
     </div>
     <div @click="confirmExit">
-      <i class="pi pi-times text-3xl mx-2 py-2 exit"></i>
+      <i class="pi pi-times text-3xl mx-2 py-2 cursor-pointer"></i>
     </div>
   </nav>
 </template>
@@ -36,9 +36,6 @@ a {
 }
 img {
   height: 40px;
-}
-.exit {
-  cursor: pointer;
 }
 nav {
   height: 65px;
