@@ -1,6 +1,6 @@
 <template>
   <div class="pg-container flex flex-column surface-50">
-    <NavBar v-if="currentPath !== '/create-post'" />
+    <NavBar v-if="notInCreatePostPage" />
     <div class="router-view overflow-auto flex-grow-1">
       <router-view></router-view>
     </div>
@@ -11,12 +11,10 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import NavBar from './components/NavBar.vue';
-import NavBarAtCreatePost from './components/HeaderOfCreatePost.vue';
+import { RoutePath } from './router/Routes';
 
 const route = useRoute();
-let currentPath = computed(() => {
-  return route.path;
-});
+let notInCreatePostPage = computed(() => route.path !== RoutePath.createpost);
 </script>
 
 <style>
