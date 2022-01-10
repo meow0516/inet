@@ -8,7 +8,7 @@ const getById = (id: number) => {
 };
 
 const create = (id: number, authorId: number, comment: string) => {
-  return axios.post<{}>(`${process.env.API_URL}/article-comments`, {
+  return axios.post<Comment>(`${process.env.API_URL}/article-comments`, {
     articleId: id,
     authorId: authorId,
     body: comment,

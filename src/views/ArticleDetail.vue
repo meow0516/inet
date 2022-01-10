@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-column align-items-center surface-50 py-4 article-container">
+  <div
+    class="flex flex-column align-items-center surface-50 py-4 article-container"
+  >
     <div class="flex mt-6" v-if="isLoading">
       <ProgressSpinner />
     </div>
@@ -15,33 +17,51 @@
           class="avatar m-2"
         />
         <div class="created-info flex flex-column justify-content-center">
-          <p
-            class="author m-0"
-          >{{ article.author.name ? article.author.name : article.author.username }}</p>
-          <p class="created-time m-0 text-700 text-sm">{{ articleCreatedAt }}發表</p>
+          <p class="author m-0">
+            {{
+              article.author.name
+                ? article.author.name
+                : article.author.username
+            }}
+          </p>
+          <p class="created-time m-0 text-700 text-sm">
+            {{ articleCreatedAt }}發表
+          </p>
         </div>
       </div>
       <article class="px-5">
         <h2 class="title">{{ article.title }}</h2>
-        <p class="text-sm">{{ article.body }}</p>
+        <p class="text-sm" v-html="article.body"></p>
       </article>
       <div class="comments px-5 pb-5">
         <h2>Discussion</h2>
         <div class="flex pb-5">
           <div class="mr-3">
-            <img :src="store.state.userInfo.avatar || defaultAvatar" alt="avatar" class="avatar" />
+            <img
+              :src="store.state.userInfo.avatar || defaultAvatar"
+              alt="avatar"
+              class="avatar"
+            />
           </div>
           <InputText type="text" v-model="commentInput" class="w-10" />
           <Button label="Submit" class="w-2" @click="submitComment" />
         </div>
         <div class="flex my-3" v-for="comment in comments">
           <div class="mr-3">
-            <img :src="comment.author.avatar || defaultAvatar" alt="avatar" class="avatar" />
+            <img
+              :src="comment.author.avatar || defaultAvatar"
+              alt="avatar"
+              class="avatar"
+            />
           </div>
           <div class="flex flex-column">
-            <p
-              class="text-sm m-0 font-semibold"
-            >{{ comment.author.name ? comment.author.name : comment.author.username }}</p>
+            <p class="text-sm m-0 font-semibold">
+              {{
+                comment.author.name
+                  ? comment.author.name
+                  : comment.author.username
+              }}
+            </p>
             <p class="text-sm m-0">
               {{ comment.body }}
               <span class="text-sm m-0 text-400">
@@ -66,42 +86,43 @@ import ArticleAPI from '../apis/article';
 import CommentAPI from '../apis/comment';
 
 import { ArticleInfo } from '../types/ArticleInfo';
-import { Comment } from '../types/Comment'
+import { Comment } from '../types/Comment';
 
 import ProgressSpinner from 'primevue/progressspinner';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import defaultAvatar from '../assets/default_avatar.png'
-import axios from 'axios';
+import defaultAvatar from '../assets/default_avatar.png';
 
-const router = useRouter()
-const store = useStore()
+const store = useStore();
+const route = useRoute();
 
-let isLoading = ref(true)
-let id = Number(useRoute().params.id)
-let article = reactive(<ArticleInfo>{})
-let articleCreatedAt = ref()
+let isLoading = ref(true);
+let id = Number(route.params.id);
+let article = reactive(<ArticleInfo>{});
+let articleCreatedAt = ref();
 
-let comments = ref(<Array<Comment>>[])
+let comments = ref(<Array<Comment>>[]);
 
-let commentInput = ref('')
+let commentInput = ref('');
 
-onMounted(
-  async () => {
-    const responseArticle = await ArticleAPI.getById(id);
-    Object.assign(article, responseArticle.data)
-    isLoading.value = false;
-    articleCreatedAt.value = moment(article.createdAt).format('YYYY-MM-DD HH:mm')
+onMounted(async () => {
+  const responseArticle = await ArticleAPI.getById(id);
+  Object.assign(article, responseArticle.data);
+  isLoading.value = false;
+  articleCreatedAt.value = moment(article.createdAt).format('YYYY-MM-DD HH:mm');
 
-    const responseComment = await CommentAPI.getById(id)
-    comments.value = responseComment.data
-  }
-)
+  const responseComment = await CommentAPI.getById(id);
+  comments.value = responseComment.data;
+});
 
 async function submitComment() {
-  await CommentAPI.create(id, store.state.userInfo.id, commentInput.value)
-  commentInput.value = ''
-  router.go(0)
+  let response = await CommentAPI.create(
+    id,
+    store.state.userInfo.id,
+    commentInput.value
+  );
+  commentInput.value = '';
+  comments.value.push(response.data);
 }
 </script>
 
