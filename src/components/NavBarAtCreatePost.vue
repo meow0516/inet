@@ -4,7 +4,7 @@
   >
     <div class="menu-main flex align-items-center">
       <div class="logo">
-        <router-link to="/">
+        <router-link :to="{ path: RoutePath.home }">
           <img src="../assets/inetlogo.png" alt="logo" />
         </router-link>
       </div>
@@ -18,6 +18,8 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+
+import { RoutePath } from '../router/Routes';
 
 const router = useRouter()
 function confirmExit() {

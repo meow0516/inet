@@ -13,7 +13,7 @@
 
       <div>
         Already have an account?
-        <router-link to="/login">
+        <router-link :to="{ path: RoutePath.login }">
           <span>Log in</span>
         </router-link>
       </div>
@@ -26,6 +26,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 
 import UserApi from '../apis/user'
+import { RoutePath } from '../router/Routes';
 
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';

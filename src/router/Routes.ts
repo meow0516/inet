@@ -9,7 +9,9 @@ export const RoutePath = {
   home: '/',
   login: '/login',
   createpost: '/create-post',
-  article: '/articles/:id',
+  article: (id?: number) => {
+    return `/articles/${id || ':id'}`;
+  },
   createaccount: '/create-account',
 };
 
@@ -17,7 +19,7 @@ const Routes: Array<RouteRecordRaw> = [
   { name: 'Home', path: RoutePath.home, component: HomePage },
   { name: 'Login', path: RoutePath.login, component: Login },
   { name: 'CreatePost', path: RoutePath.createpost, component: CreatePost },
-  { name: 'article', path: RoutePath.article, component: ArticleDetail },
+  { name: 'article', path: RoutePath.article(), component: ArticleDetail },
   {
     name: 'CreateAccount',
     path: RoutePath.createaccount,

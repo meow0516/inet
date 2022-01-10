@@ -4,7 +4,7 @@
   >
     <div class="menu-main flex align-items-center">
       <div class="logo">
-        <router-link to="/">
+        <router-link :to="{ path: RoutePath.home }">
           <img src="../assets/inetlogo.png" alt="logo" />
         </router-link>
       </div>
@@ -16,15 +16,15 @@
       </div>
     </div>
     <div v-if="!isLogIn" class="menu-account flex align-items-center">
-      <router-link to="/login">
+      <router-link :to="{ path: RoutePath.login }">
         <Button label="Log in" class="p-button-text" />
       </router-link>
-      <router-link to="/create-account">
+      <router-link :to="{ path: RoutePath.createaccount }">
         <Button label="Create account" class="p-button-outlined" />
       </router-link>
     </div>
     <div v-else class="menu-account flex align-items-center">
-      <router-link to="/create-post">
+      <router-link :to="{ path: RoutePath.createpost }">
         <Button label="Create Post" class="p-button-outlined btn-create" />
       </router-link>
       <i class="pi pi-search text-3xl mx-2 py-2 search-icon" />
@@ -50,12 +50,14 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Menu from 'primevue/menu';
 
 import defaultAvatar from '../assets/default_avatar.png';
-import { useStore } from 'vuex';
+import { RoutePath } from '../router/Routes';
 
 const store = useStore();
 let isLogIn = computed(() => (store.state.userInfo.username ? true : false));
