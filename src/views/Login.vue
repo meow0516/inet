@@ -1,4 +1,7 @@
 <template>
+  <div v-if="errorCode" class="flex justify-content-center bg-pink-100">
+    無效帳號或密碼
+  </div>
   <form
     class="flex justify-content-center py-4"
     @submit.prevent="handleFormSubmit"
@@ -43,6 +46,7 @@ const router = useRouter();
 const store = useStore();
 let inputUsername = ref('');
 let inputPassword = ref('');
+let errorCode = ref('');
 
 async function handleFormSubmit() {
   try {
@@ -55,7 +59,7 @@ async function handleFormSubmit() {
     store.commit('saveUserToStorage', JSON.stringify(userInfo));
     router.push('/');
   } catch (error: any) {
-    console.log(error.response);
+    errorCode.value = error.response.data.errorCode;
   }
 }
 </script>
