@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex justify-content-between fixed bg-white top-0 left-0 z-1 border-bottom-1 border-200"
+    class="flex justify-content-between bg-white top-0 left-0 z-1 border-bottom-1 border-200"
   >
     <div class="menu-main flex align-items-center">
       <div class="logo">

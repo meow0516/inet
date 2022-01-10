@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex justify-content-between fixed bg-white top-0 left-0 z-1 border-bottom-1 border-200"
+    class="flex justify-content-between align-items-center bg-white top-0 left-0 z-1 border-bottom-1 border-200"
   >
     <div class="menu-main flex align-items-center">
       <div class="logo">
@@ -11,7 +11,7 @@
       <div class="mx-2 font-bold">Create Post</div>
     </div>
     <div @click="confirmExit">
-      <i class="pi pi-times text-3xl mx-2 py-2"></i>
+      <i class="pi pi-times text-3xl mx-2 py-2 exit"></i>
     </div>
   </nav>
 </template>
@@ -21,11 +21,11 @@ import { useRouter } from 'vue-router';
 
 import { RoutePath } from '../router/Routes';
 
-const router = useRouter()
+const router = useRouter();
 function confirmExit() {
-  let leavePage: boolean = confirm('Do you want to leave the page?')
+  let leavePage: boolean = confirm('Do you want to leave the page?');
   if (leavePage) {
-    router.push('/')
+    router.push('/');
   }
 }
 </script>
@@ -37,7 +37,11 @@ a {
 img {
   height: 40px;
 }
+.exit {
+  cursor: pointer;
+}
 nav {
+  height: 65px;
   width: 100%;
   padding-left: 3rem;
   padding-right: 3rem;

@@ -1,4 +1,5 @@
 <template>
+  <HeaderOfCreatePost />
   <div class="flex justify-content-center py-4 surface-50 page-container">
     <div class="w-6 px-4">
       <InputText
@@ -61,49 +62,52 @@ import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import ArticleAPI from '../apis/article';
 
+import HeaderOfCreatePost from '../components/HeaderOfCreatePost.vue';
+
 const localStorageKeys = {
   title: 'storageTitle',
   content: 'storageContent',
 };
 
-const router = useRouter()
-const store = useStore()
-let title = ref(localStorage.getItem(localStorageKeys.title) || '')
-let content = ref(localStorage.getItem(localStorageKeys.content) || '')
-let imageUrl = ref('')
+const router = useRouter();
+const store = useStore();
+let title = ref(localStorage.getItem(localStorageKeys.title) || '');
+let content = ref(localStorage.getItem(localStorageKeys.content) || '');
+let imageUrl = ref('');
 
-let isLocalStorageOn = ref(true)
-let localStorageStatus = computed(() => isLocalStorageOn.value ? "已啟用" : "")
-let saveStatus = ref('')
+let isLocalStorageOn = ref(true);
+let localStorageStatus = computed(() =>
+  isLocalStorageOn.value ? '已啟用' : ''
+);
+let saveStatus = ref('');
 
-let guideTitle = ref('')
-let guideContent = ref('')
-let guideY = ref('')
+let guideTitle = ref('');
+let guideContent = ref('');
+let guideY = ref('');
 
 let intervalId: NodeJS.Timer | undefined = undefined;
 
 onMounted(() => {
-  intervalId = setInterval(storeToLocalStorage, 60000)
-})
+  intervalId = setInterval(storeToLocalStorage, 60000);
+});
 
 onBeforeUnmount(() => {
   if (intervalId) {
-    clearInterval(intervalId)
+    clearInterval(intervalId);
   }
 });
 
 function storeToLocalStorage() {
   if (isLocalStorageOn.value) {
-    localStorage.setItem(localStorageKeys.title, title.value)
-    localStorage.setItem(localStorageKeys.content, content.value)
-    saveStatus.value = '已自動儲存'
+    localStorage.setItem(localStorageKeys.title, title.value);
+    localStorage.setItem(localStorageKeys.content, content.value);
+    saveStatus.value = '已自動儲存';
     let timeoutId = setTimeout(() => {
-      saveStatus.value = ''
+      saveStatus.value = '';
       clearTimeout(timeoutId);
-    }, 5000)
-  }
-  else {
-    clearLocalStorage()
+    }, 5000);
+  } else {
+    clearLocalStorage();
   }
 }
 
@@ -113,30 +117,33 @@ function clearLocalStorage() {
 }
 
 function showTitleGuide() {
-  guideY.value = 'top: 30px'
-  guideTitle.value = 'Writing a Great Post Title'
-  guideContent.value = 'Think of your post title as a super short (but compelling!) description — like an overview of the actual post in one short sentence. Use keywords where appropriate to help ensure people can find your post by search.'
+  guideY.value = 'top: 30px';
+  guideTitle.value = 'Writing a Great Post Title';
+  guideContent.value =
+    'Think of your post title as a super short (but compelling!) description — like an overview of the actual post in one short sentence. Use keywords where appropriate to help ensure people can find your post by search.';
 }
 
 function showContentGuide() {
-  guideY.value = 'top: 150px'
-  guideTitle.value = 'Editor Basics'
-  guideContent.value = 'Use Markdown to write and format posts. You can use Liquid tags to add rich content such as Tweets, YouTube videos, etc. In addition to images for the post\'s content, you can also drag and drop a cover image'
+  guideY.value = 'top: 150px';
+  guideTitle.value = 'Editor Basics';
+  guideContent.value =
+    "Use Markdown to write and format posts. You can use Liquid tags to add rich content such as Tweets, YouTube videos, etc. In addition to images for the post's content, you can also drag and drop a cover image";
 }
 
 async function submitPost() {
-  if (title.value.length === 0) alert('please input title')
+  if (title.value.length === 0) alert('please input title');
   else {
-    const response = await ArticleAPI.create(store.state.userInfo.id, imageUrl.value, title.value, content.value)
-    let id = response.data.id
-    router.push(`/articles/${id}`)
-    clearLocalStorage()
+    const response = await ArticleAPI.create(
+      store.state.userInfo.id,
+      imageUrl.value,
+      title.value,
+      content.value
+    );
+    let id = response.data.id;
+    router.push(`/articles/${id}`);
+    clearLocalStorage();
   }
 }
 </script>
 
-<style scoped lang="scss">
-.page-container {
-  min-height: calc(100vh - 53px);
-}
-</style>
+<style scoped lang="scss"></style>
